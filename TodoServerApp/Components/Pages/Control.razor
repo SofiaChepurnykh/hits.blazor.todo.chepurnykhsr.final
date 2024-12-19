@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject IDataService data
 @attribute [Authorize]
+@inject NavigationManager navigate
 
 <PageTitle>Управление</PageTitle>
 
@@ -16,6 +17,9 @@
     }
     else
     {
+        <div class="btn-group m-2">
+            <button class="btn btn-primary" @onclick="AddEmployee">Новый сотрудник</button>
+        </div>
         <div class="card-group">
             @foreach (var employee in employees)
             {
@@ -27,6 +31,10 @@
                         <p>@employee.Position</p>
                         <p>@employee.Time</p>
                         <p>@employee.Salary</p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="employees/@employee.Id">Изменить</a>
+                        <button class="btn btn-primary" @onclick="async() => await DeleteEmployee(employee.Id)">Удалить</button>
                     </div>
                 </div>
             }
@@ -40,6 +48,17 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        employees = await data.GetEmployeeItemsAsync();
+        employees = await data.GetAllAsync();
+    }
+
+    void AddEmployee()
+    {
+        navigate.NavigateTo("employees/add");
+    }
+
+    async Task DeleteEmployee(int id)
+    {
+        await data.DeleteAsync(id);
+        employees = await data.GetAllAsync();
     }
 }

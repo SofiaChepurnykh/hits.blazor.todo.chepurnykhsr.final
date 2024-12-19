@@ -13,10 +13,30 @@ namespace TodoServerApp.Data.Services
             new() { Id = 4, Name="Косишнева Анастасия", Position="Бухгалтер", Time=12, Salary=80000},
         ];
 
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<EmployeeItem>> GetEmployeeItemsAsync()
         {
             await Task.Delay(1000);
             return await Task.FromResult(Employees);
+        }
+
+        public Task<EmployeeItem> GetEmployeeAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveAsync(EmployeeItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<EmployeeItem>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

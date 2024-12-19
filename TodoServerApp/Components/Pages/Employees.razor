@@ -10,7 +10,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>ИД</th>
+            @* <th>ИД</th> *@
             <th>Сотрудник</th>
             <th>Должность</th>
             <th>Рабочее время, ч</th>
@@ -29,7 +29,7 @@
             @foreach (var employee in employees)
             {
                 <tr>
-                    <td>@employee.Id</td>
+                    @* <td>@employee.Id</td> *@
                     <td>@employee.Name</td>
                     <td>@employee.Position</td>
                     <td>@employee.Time</td>
@@ -45,6 +45,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        employees = await data.GetEmployeeItemsAsync();
+        employees = await data.GetAllAsync();
     }
 }

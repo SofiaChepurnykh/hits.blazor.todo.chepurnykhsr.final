@@ -1,0 +1,72 @@
+﻿@page "/employees/add"
+@page "/employees/{Id:int}"
+
+@inject IDataService data
+@inject NavigationManager navigate
+
+@if (EmployeeItem != null)
+{
+    <EditForm Model="EmployeeItem" FormName="EmployeeForm" OnValidSubmit="ValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <h2>Новый сотрудник</h2>
+        <InputNumber @bind-Value="EmployeeItem.Id" hidden />
+        <div class="form-group d-flex justify-content-between m-2">
+            <label class="col-form-label col-3">Сотрудник</label>
+            <InputText @bind-Value="EmployeeItem.Name" class="form-control" />
+            <ValidationMessage For="() => EmployeeItem.Name" />
+        </div>
+        <div class="form-group d-flex justify-content-between m-2">
+            <label class="col-form-label col-3">Должность</label>
+            <InputText @bind-Value="EmployeeItem.Position" class="form-control" />
+            <ValidationMessage For="() => EmployeeItem.Position" />
+        </div>
+        <div class="form-group d-flex justify-content-between m-2">
+            <label class="col-form-label col-3">Рабочее время, ч</label>
+            <InputNumber @bind-Value="EmployeeItem.Time" class="form-control" />
+            <ValidationMessage For="() => EmployeeItem.Time" />
+        </div>
+        <div class="form-group d-flex justify-content-between m-2">
+            <label class="col-form-label col-3">Заработная плата, руб</label>
+            <InputNumber @bind-Value="EmployeeItem.Salary" class="form-control" />
+            <ValidationMessage For="() => EmployeeItem.Salary" />
+        </div>
+        <div class="bin-group">
+            <button class="btn btn-primary m-2" type="submit">Сохранить</button>
+            <a class="btn btn-primary m-2" href="/">Отмена</a>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    EmployeeItem? EmployeeItem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (EmployeeItem == null)
+        {
+            EmployeeItem = new();
+            if (Id != 0)
+            {
+                var src = await data.GetEmployeeAsync(Id);
+                EmployeeItem.Id = src.Id;
+                EmployeeItem.Name = src.Name;
+                EmployeeItem.Position = src.Position;
+                EmployeeItem.Time = src.Time;
+                EmployeeItem.Salary = src.Salary;
+            }
+        }
+    }
+
+    async Task ValidSubmit()
+    {
+        await data.SaveAsync(EmployeeItem!);
+        navigate.NavigateTo("/");
+    }
+}
