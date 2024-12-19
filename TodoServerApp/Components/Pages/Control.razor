@@ -7,38 +7,33 @@
 
 <h1>Управление сотрудниками</h1>
 
-<table class="table table-bordered">
-    <thead>
+<div class="container">
+    @if (employees == null)
+    {
         <tr>
-            <th>ИД</th>
-            <th>Сотрудник</th>
-            <th>Должность</th>
-            <th>Рабочее время, ч</th>
-            <th>Заработная плата, руб</th>
+            <td colspan="5">Loading ...</td>
         </tr>
-    </thead>
-    <tbody>
-        @if (employees == null)
-        {
-            <tr>
-                <td colspan="5">Loading ...</td>
-            </tr>
-        }
-        else
-        {
-        @foreach (var employee in employees)
+    }
+    else
+    {
+        <div class="card-group">
+            @foreach (var employee in employees)
             {
-                <tr>
-                    <td>@employee.Id</td>
-                    <td>@employee.Name</td>
-                    <td>@employee.Position</td>
-                    <td>@employee.Time</td>
-                    <td>@employee.Salary</td>
-                </tr>
+                <div class="card">
+                    <div class="card-header">
+                        @employee.Name
+                    </div>
+                    <div class="card-body">
+                        <p>@employee.Position</p>
+                        <p>@employee.Time</p>
+                        <p>@employee.Salary</p>
+                    </div>
+                </div>
             }
-        }
-    </tbody>
-</table>
+        </div>
+    }
+</div>
+
 @code {
     IEnumerable<EmployeeItem>? employees;
 
