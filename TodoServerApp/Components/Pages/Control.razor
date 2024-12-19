@@ -1,4 +1,7 @@
 ﻿@page "/сontrol"
+@rendermode InteractiveServer
+@inject IDataService data
+@attribute [Authorize]
 
 <PageTitle>Управление</PageTitle>
 
@@ -15,24 +18,33 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var employee in employees)
+        @if (employees == null)
         {
             <tr>
-                <td>@employee.Id</td>
-                <td>@employee.Name</td>
-                <td>@employee.Position</td>
-                <td>@employee.Time</td>
-                <td>@employee.Salary</td>
+                <td colspan="5">Loading ...</td>
             </tr>
+        }
+        else
+        {
+        @foreach (var employee in employees)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.Time</td>
+                    <td>@employee.Salary</td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 @code {
-    IEnumerable<EmployeeItem> employees = new List<EmployeeItem>
+    IEnumerable<EmployeeItem>? employees;
+
+    protected override async Task OnInitializedAsync()
     {
-        new EmployeeItem { Id = 1, Name="Чепурных Софья", Position="Директор", Time=8, Salary=300000},
-        new EmployeeItem { Id = 2, Name="Шаукерова Аделия", Position="Разработчик", Time=8, Salary=150000},
-        new EmployeeItem { Id = 3, Name="Шананина Валерия", Position="Менеджер", Time=12, Salary=80000},
-        new EmployeeItem { Id = 4, Name="Косишнева Анастасия", Position="Бухгалтер", Time=12, Salary=80000},
-    };
+        await base.OnInitializedAsync();
+        employees = await data.GetEmployeeItemsAsync();
+    }
 }
