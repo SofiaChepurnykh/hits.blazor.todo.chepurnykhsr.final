@@ -1,0 +1,38 @@
+﻿@page "/"
+
+<PageTitle>Сотрудники</PageTitle>
+
+<h1>Сотрудники</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ИД</th>
+            <th>Сотрудник</th>
+            <th>Должность</th>
+            <th>Рабочее время, ч</th>
+            <th>Заработная плата, руб</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in employees)
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Name</td>
+                <td>@employee.Position</td>
+                <td>@employee.Time</td>
+                <td>@employee.Salary</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    IEnumerable<EmployeeItem> employees = new List<EmployeeItem>
+    {
+        new EmployeeItem { Id = 1, Name="Чепурных Софья", Position="Директор", Time=8, Salary=300000},
+        new EmployeeItem { Id = 2, Name="Шаукерова Аделия", Position="Разработчик", Time=8, Salary=150000},
+        new EmployeeItem { Id = 3, Name="Шананина Валерия", Position="Менеджер", Time=12, Salary=80000},
+        new EmployeeItem { Id = 4, Name="Косишнева Анастасия", Position="Бухгалтер", Time=12, Salary=80000},
+    };
+}
